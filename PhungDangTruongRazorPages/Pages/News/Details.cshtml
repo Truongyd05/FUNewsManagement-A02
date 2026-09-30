@@ -1,0 +1,20 @@
+@page "{id}"
+@model PhungDangTruongRazorPages.Pages.News.DetailsModel
+@{
+    var a = Model.Article;
+    ViewData["Title"] = a.NewsTitle;
+}
+
+<a asp-page="Index" class="btn btn-link ps-0">&larr; Back to news</a>
+<h2>@a.NewsTitle</h2>
+<p class="lead">@a.Headline</p>
+<p class="text-muted small">
+    @a.Category?.CategoryName · @a.CreatedDate?.ToString("dd/MM/yyyy") · by @a.CreatedBy?.AccountName · Source: @a.NewsSource
+</p>
+<div style="white-space: pre-wrap">@a.NewsContent</div>
+<div class="mt-3">
+    @foreach (var t in a.Tags)
+    {
+        <span class="badge bg-secondary">@t.TagName</span>
+    }
+</div>
