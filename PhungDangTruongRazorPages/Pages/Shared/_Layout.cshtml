@@ -10,35 +10,63 @@
 <body>
     @{
         var role = User.GetRole();
+        var displayName = User.Identity?.Name ?? "";
+        var initial = string.IsNullOrEmpty(displayName) ? "?" : displayName.Substring(0, 1).ToUpperInvariant();
+        var page = (ViewContext.RouteData.Values["page"]?.ToString() ?? "").TrimStart('/');
     }
-    <header>
-        <nav class="navbar navbar-expand-md navbar-dark bg-primary mb-3">
+    <header class="sticky-top">
+        <nav class="navbar navbar-expand-md navbar-dark fnm-navbar">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-page="/News/Index">FU News Management</a>
+                <a class="navbar-brand" asp-page="/News/Index">
+                    <span class="fnm-brand-mark" aria-hidden="true">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+                    </span>
+                    <span>FU News</span>
+                </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="mainNav">
                     <ul class="navbar-nav me-auto">
-                        <li class="nav-item"><a class="nav-link" asp-page="/News/Index">News</a></li>
+                        <li class="nav-item">
+                            <a class="nav-link @(page == "News/Index" ? "active" : "")" asp-page="/News/Index">News</a>
+                        </li>
                         @if (role == "Admin")
                         {
-                            <li class="nav-item"><a class="nav-link" asp-page="/Accounts/Index">Accounts</a></li>
-                            <li class="nav-item"><a class="nav-link" asp-page="/Reports/Index">Report</a></li>
+                            <li class="nav-item">
+                                <a class="nav-link @(page == "Accounts/Index" ? "active" : "")" asp-page="/Accounts/Index">Accounts</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link @(page == "Reports/Index" ? "active" : "")" asp-page="/Reports/Index">Report</a>
+                            </li>
                         }
                         @if (role == "Staff")
                         {
-                            <li class="nav-item"><a class="nav-link" asp-page="/Categories/Index">Categories</a></li>
-                            <li class="nav-item"><a class="nav-link" asp-page="/Manage/Articles">Manage News</a></li>
-                            <li class="nav-item"><a class="nav-link" asp-page="/Manage/History">My News History</a></li>
-                            <li class="nav-item"><a class="nav-link" asp-page="/Account/Profile">Profile</a></li>
+                            <li class="nav-item">
+                                <a class="nav-link @(page == "Categories/Index" ? "active" : "")" asp-page="/Categories/Index">Categories</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link @(page == "Manage/Articles" ? "active" : "")" asp-page="/Manage/Articles">Manage News</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link @(page == "Manage/History" ? "active" : "")" asp-page="/Manage/History">My News History</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link @(page == "Account/Profile" ? "active" : "")" asp-page="/Account/Profile">Profile</a>
+                            </li>
                         }
                     </ul>
-                    <ul class="navbar-nav">
+                    <ul class="navbar-nav align-items-md-center">
                         @if (User.Identity?.IsAuthenticated == true)
                         {
-                            <li class="nav-item"><span class="navbar-text me-3">@User.Identity.Name (@role)</span></li>
+                            <li class="nav-item me-md-3">
+                                <span class="fnm-user-chip">
+                                    <span class="fnm-avatar">@initial</span>
+                                    <span>@displayName</span>
+                                    <span class="fnm-role-pill">@role</span>
+                                </span>
+                            </li>
                             <li class="nav-item">
                                 <form asp-page="/Account/Login" asp-page-handler="Logout" method="post" class="d-inline">
                                     <button type="submit" class="btn btn-outline-light btn-sm">Logout</button>
@@ -54,8 +82,9 @@
             </div>
         </nav>
     </header>
+
     <div class="container">
-        <main role="main" class="pb-3">
+        <main role="main" class="fnm-page">
             @RenderBody()
         </main>
     </div>
@@ -67,8 +96,11 @@
     </div>
     <div id="toastHost" class="toast-container position-fixed top-0 end-0 p-3"></div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">&copy; 2026 - FU News Management System</div>
+    <footer class="fnm-footer">
+        <div class="container d-flex justify-content-between align-items-center flex-wrap gap-2">
+            <span>&copy; 2026 — FU News Management System</span>
+            <span class="text-muted">Greenwich · ClassCode A02</span>
+        </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

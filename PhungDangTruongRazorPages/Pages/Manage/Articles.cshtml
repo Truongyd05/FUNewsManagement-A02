@@ -4,12 +4,15 @@
     ViewData["Title"] = "Manage news";
 }
 
-<div class="d-flex justify-content-between align-items-center mb-3">
-    <h2 class="mb-0">Manage news</h2>
-    <button class="btn btn-success" data-modal-url="@Url.Page("Articles", "Form")">+ New article</button>
+<div class="fnm-page-head">
+    <h1 class="fnm-page-title">Manage news</h1>
+    <button class="btn btn-success" data-modal-url="@Url.Page("Articles", "Form")">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-3px"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
+        New article
+    </button>
 </div>
 
-<form method="get" class="row g-2 mb-3">
+<form method="get" class="row g-2 mb-4 fnm-filters">
     <div class="col-md-4">
         <input asp-for="Keyword" class="form-control" placeholder="Search title, headline, content or tag..." />
     </div>
@@ -35,6 +38,6 @@
     </div>
 </form>
 
-<div id="newsList">
+<div id="newsList" class="fnm-table-wrap">
     <partial name="_ArticleTable" model="Model.Articles" />
 </div>

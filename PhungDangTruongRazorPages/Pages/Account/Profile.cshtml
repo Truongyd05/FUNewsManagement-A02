@@ -5,17 +5,27 @@
     var a = Model.Account!;
 }
 
-<h2>My profile</h2>
+<div class="fnm-page-head">
+    <h1 class="fnm-page-title">My profile</h1>
+</div>
+
 <div class="card" style="max-width: 560px">
     <div class="card-body">
+        <div class="d-flex align-items-center gap-3 mb-4">
+            <span class="fnm-avatar" style="width:56px;height:56px;font-size:1.4rem">@(string.IsNullOrEmpty(a.AccountName) ? "?" : a.AccountName.Substring(0, 1).ToUpperInvariant())</span>
+            <div>
+                <div class="fs-5 fw-semibold">@a.AccountName</div>
+                <span class="badge bg-primary">@AccountRole.GetName(a.AccountRole)</span>
+            </div>
+        </div>
         <dl class="row mb-0">
-            <dt class="col-sm-4">ID</dt><dd class="col-sm-8">@a.AccountId</dd>
-            <dt class="col-sm-4">Name</dt><dd class="col-sm-8">@a.AccountName</dd>
-            <dt class="col-sm-4">Email</dt><dd class="col-sm-8">@a.AccountEmail</dd>
-            <dt class="col-sm-4">Role</dt><dd class="col-sm-8">@AccountRole.GetName(a.AccountRole)</dd>
+            <dt class="col-sm-4 text-muted">ID</dt><dd class="col-sm-8">@a.AccountId</dd>
+            <dt class="col-sm-4 text-muted">Name</dt><dd class="col-sm-8">@a.AccountName</dd>
+            <dt class="col-sm-4 text-muted">Email</dt><dd class="col-sm-8">@a.AccountEmail</dd>
+            <dt class="col-sm-4 text-muted">Role</dt><dd class="col-sm-8">@AccountRole.GetName(a.AccountRole)</dd>
         </dl>
     </div>
-    <div class="card-footer">
+    <div class="card-footer bg-white d-flex justify-content-end">
         <button class="btn btn-primary" data-modal-url="@Url.Page("Profile", "Form")">Edit profile</button>
     </div>
 </div>
