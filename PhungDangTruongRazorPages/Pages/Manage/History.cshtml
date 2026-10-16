@@ -5,19 +5,22 @@
 }
 
 <div class="fnm-page-head">
-    <h1 class="fnm-page-title">My news history</h1>
-    <button class="btn btn-success" data-modal-url="@Url.Page("Articles", "Form")">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-3px"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
+    <div>
+        <span class="fnm-kicker">My work</span>
+        <h1 class="fnm-page-title">My news history</h1>
+    </div>
+    <button class="btn btn-primary" data-modal-url="@Url.Page("Articles", "Form")">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
         New article
     </button>
 </div>
 
-<form method="get" class="row g-2 mb-4 fnm-filters">
+<form method="get" class="fnm-filters row g-2 align-items-center">
     <div class="col-md-4">
-        <input asp-for="Keyword" class="form-control" placeholder="Search title, headline, content or tag..." />
+        <input name="keyword" value="@Model.Keyword" class="form-control" placeholder="Search title, headline, content or tag…" aria-label="Search articles" />
     </div>
     <div class="col-md-3">
-        <select asp-for="CategoryId" class="form-select">
+        <select name="categoryId" class="form-select" aria-label="Category">
             <option value="">All categories</option>
             @foreach (var c in Model.Categories)
             {
@@ -26,18 +29,18 @@
         </select>
     </div>
     <div class="col-md-2">
-        <select asp-for="Status" class="form-select">
+        <select name="status" class="form-select" aria-label="Status">
             <option value="">All statuses</option>
             <option value="true" selected="@(Model.Status == true)">Active</option>
             <option value="false" selected="@(Model.Status == false)">Inactive</option>
         </select>
     </div>
-    <div class="col-md-3">
+    <div class="col-md-3 d-flex gap-2">
         <button type="submit" class="btn btn-primary">Search</button>
         <a asp-page="History" class="btn btn-outline-secondary">Reset</a>
     </div>
 </form>
 
-<div id="newsList" class="fnm-table-wrap">
+<div id="newsList">
     <partial name="_ArticleTable" model="Model.Articles" />
 </div>

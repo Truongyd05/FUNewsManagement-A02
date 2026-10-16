@@ -1,27 +1,36 @@
 @model List<NewsArticle>
 
-<table class="table table-hover align-middle">
+<table class="fnm-table align-middle">
     <thead>
-        <tr><th>ID</th><th>Title</th><th>Category</th><th>Tags</th><th>Created</th><th>Author</th><th>Status</th><th class="text-end">Actions</th></tr>
+        <tr>
+            <th>ID</th>
+            <th>Title</th>
+            <th>Category</th>
+            <th>Tags</th>
+            <th>Created</th>
+            <th>Author</th>
+            <th>Status</th>
+            <th class="fnm-cell-actions">Actions</th>
+        </tr>
     </thead>
     <tbody>
         @foreach (var n in Model)
         {
             <tr>
-                <td class="text-muted">@n.NewsArticleId</td>
-                <td class="fw-semibold">@n.NewsTitle</td>
+                <td class="fnm-cell-id">@n.NewsArticleId</td>
+                <td class="fnm-cell-title">@n.NewsTitle</td>
                 <td>@n.Category?.CategoryName</td>
-                <td class="text-muted">@string.Join(", ", n.Tags.Select(t => t.TagName))</td>
-                <td class="text-muted">@n.CreatedDate?.ToString("dd/MM/yyyy")</td>
+                <td class="fnm-cell-muted">@string.Join(", ", n.Tags.Select(t => t.TagName))</td>
+                <td class="fnm-cell-muted">@n.CreatedDate?.ToString("dd/MM/yyyy")</td>
                 <td>@n.CreatedBy?.AccountName</td>
                 <td>
-                    @if (n.NewsStatus == true) { <span class="badge bg-success">Active</span> }
-                    else { <span class="badge bg-secondary">Inactive</span> }
+                    @if (n.NewsStatus == true) { <span class="fnm-badge is-active">Active</span> }
+                    else { <span class="fnm-badge is-muted">Inactive</span> }
                 </td>
-                <td class="text-end text-nowrap">
-                    <button class="btn btn-sm btn-outline-secondary fnm-action-btn" title="View" data-modal-url="@Url.Page("/Manage/Articles", "Details", new { id = n.NewsArticleId })">View</button>
-                    <button class="btn btn-sm btn-outline-primary fnm-action-btn" title="Edit" data-modal-url="@Url.Page("/Manage/Articles", "Form", new { id = n.NewsArticleId })">Edit</button>
-                    <button class="btn btn-sm btn-outline-danger fnm-action-btn" title="Delete" data-modal-url="@Url.Page("/Manage/Articles", "DeleteForm", new { id = n.NewsArticleId })">Delete</button>
+                <td class="fnm-cell-actions">
+                    <button class="btn btn-sm btn-outline-secondary" title="View" data-modal-url="@Url.Page("/Manage/Articles", "Details", new { id = n.NewsArticleId })">View</button>
+                    <button class="btn btn-sm btn-outline-primary" title="Edit" data-modal-url="@Url.Page("/Manage/Articles", "Form", new { id = n.NewsArticleId })">Edit</button>
+                    <button class="btn btn-sm btn-outline-danger" title="Delete" data-modal-url="@Url.Page("/Manage/Articles", "DeleteForm", new { id = n.NewsArticleId })">Delete</button>
                 </td>
             </tr>
         }
