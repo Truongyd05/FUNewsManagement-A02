@@ -33,6 +33,12 @@ public class IndexModel : PageModel
     /// <summary>Total number of active articles.</summary>
     public int TotalCount { get; set; }
 
+    /// <summary>Top stories for the sidebar, always based on the full active feed.</summary>
+    public List<NewsArticle> TopStories { get; set; } = new();
+
+    /// <summary>Most frequent tags for the sidebar, always based on the full active feed.</summary>
+    public List<string> TrendingTags { get; set; } = new();
+
     public void OnGet()
     {
         Categories = _categories.GetActive();
@@ -46,5 +52,18 @@ public class IndexModel : PageModel
             .GroupBy(n => n.CategoryId!.Value)
             .ToDictionary(g => g.Key, g => g.Count());
         TotalCount = activeArticles.Count;
+
+        // Sidebar rails read from the full active feed too, so they stay
+        // populated even when the current filter returns nothing.
+        TopStories = activeArticles.Take(5).ToList();
+        TrendingTags = activeArticles
+            .SelectMany(n => n.Tags)
+            .Where(t => !string.IsNullOrWhiteSpace(t.TagName))
+            .GroupBy(t => t.TagName!)
+            .OrderByDescending(g => g.Count())
+            .ThenBy(g => g.Key)
+            .Take(12)
+            .Select(g => g.Key)
+            .ToList();
     }
 }

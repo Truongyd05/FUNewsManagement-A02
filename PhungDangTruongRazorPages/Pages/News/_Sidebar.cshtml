@@ -1,0 +1,62 @@
+@model PhungDangTruongRazorPages.Pages.News.IndexModel
+@{
+    var categories = Model.Categories;
+    var keyword = Model.Keyword;
+    var selectedCategory = Model.CategoryId;
+    var categoryCounts = Model.CategoryCounts ?? new Dictionary<short, int>();
+    var totalCount = Model.TotalCount;
+    var topStories = Model.TopStories ?? new List<NewsArticle>();
+    var trendingTags = Model.TrendingTags ?? new List<string>();
+}
+<aside class="col-lg-4">
+    @if (topStories.Any())
+    {
+        <div class="fnm-sidebar-block">
+            <div class="fnm-section-head fnm-section-head-sm">
+                <h2>Top stories</h2>
+            </div>
+            <ol class="fnm-mostread">
+                @foreach (var s in topStories)
+                {
+                    <li><a asp-page="Details" asp-route-id="@s.NewsArticleId">@s.NewsTitle</a></li>
+                }
+            </ol>
+        </div>
+    }
+
+    <div class="fnm-sidebar-block">
+        <div class="fnm-section-head fnm-section-head-sm">
+            <h2>Browse</h2>
+        </div>
+        <nav class="fnm-cat-list">
+            <a class="fnm-cat-link @(selectedCategory == null ? "active" : "")" asp-page="Index" asp-route-keyword="@keyword">
+                <span>All news</span>
+                <span class="fnm-cat-count">@totalCount</span>
+            </a>
+            @foreach (var c in categories)
+            {
+                categoryCounts.TryGetValue(c.CategoryId, out var count);
+                <a class="fnm-cat-link @(selectedCategory == c.CategoryId ? "active" : "")"
+                   asp-page="Index" asp-route-categoryId="@c.CategoryId" asp-route-keyword="@keyword">
+                    <span>@c.CategoryName</span>
+                    <span class="fnm-cat-count">@count</span>
+                </a>
+            }
+        </nav>
+    </div>
+
+    @if (trendingTags.Any())
+    {
+        <div class="fnm-sidebar-block">
+            <div class="fnm-section-head fnm-section-head-sm">
+                <h2>Topics</h2>
+            </div>
+            <div class="fnm-tag-cloud">
+                @foreach (var t in trendingTags)
+                {
+                    <a class="fnm-tag" asp-page="Index" asp-route-keyword="@t">@t</a>
+                }
+            </div>
+        </div>
+    }
+</aside>
